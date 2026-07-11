@@ -1,0 +1,24 @@
+{
+  "name": "macron-ai",
+  "version": "1.0.0",
+  "description": "Real AI-powered full-stack application",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm run dev:backend & pnpm run dev:frontend",
+    "dev:backend": "cd backend && python main.py",
+    "dev:frontend": "cd frontend && pnpm dev",
+    "build": "cd frontend && pnpm build",
+    "build:all": "cd frontend && pnpm build && echo 'Frontend built successfully'",
+    "start": "sh .replit-run.sh",
+    "setup": "bash setup.sh"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "fastapi",
+    "react",
+    "typescript"
+  ],
+  "author": "Macron AI Team",
+  "license": "MIT"
+}

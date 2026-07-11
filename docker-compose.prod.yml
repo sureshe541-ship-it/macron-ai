@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DEBUG=false
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=gpt-4
+      - ALLOWED_ORIGINS=*
+      - FRONTEND_URL=https://${REPLIT_OWNER}-${REPLIT_SLUG}.replit.dev
+    networks:
+      - macron-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=https://${REPLIT_OWNER}-${REPLIT_SLUG}.replit.dev/api
+    depends_on:
+      - backend
+    networks:
+      - macron-network
+    restart: always
+
+networks:
+  macron-network:
+    driver: bridge
