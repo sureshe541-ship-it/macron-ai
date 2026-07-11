@@ -1,21 +1,22 @@
-FROM node:20-alpine
+FROM node:18-alpine as builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
-# Install dependencies
 RUN npm ci
 
-# Copy application
 COPY . .
 
-# Build application
 RUN npm run build
 
-# Use serve to run the app
+FROM node:18-alpine
+
+WORKDIR /app
+
 RUN npm install -g serve
+
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
